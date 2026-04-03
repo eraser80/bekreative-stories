@@ -158,11 +158,11 @@ select, input[type=text] { width:100%; background:var(--cream); border:1.5px sol
       </div>
     </div>
 
-    <div class="foto-area" onclick="document.getElementById('fotoInput').click()">
-      <div class="foto-area-text">📷 Aggiungi foto prodotto</div>
+    <div class="foto-area" id="fotoArea" onclick="document.getElementById('fotoInput').click()">
+      <div class="foto-area-text" id="fotoAreaText">📷 Aggiungi foto prodotto</div>
       <div class="foto-area-sub">Carica 1 foto — Claude la analizza visivamente</div>
     </div>
-    <input type="file" id="fotoInput" accept="image/*" style="display:none" onchange="handleFoto(this)">
+    <input type="file" id="fotoInput" accept="image/*" capture="environment" style="display:none" onchange="handleFoto(this)">
     <div class="foto-previews" id="fotoPreviews"></div>
   </div>
 
@@ -242,22 +242,41 @@ function handleFoto(input) {
   if (fotoData.length >= 1) return;
   const file = input.files[0];
   if (!file) return;
-  const img = new Image();
-  const url = URL.createObjectURL(file);
-  img.onload = () => {
-    const canvas = document.createElement('canvas');
-    const MAX = 800;
-    let w = img.width, h = img.height;
-    if (w > h && w > MAX) { h = h * MAX / w; w = MAX; }
-    else if (h > MAX) { w = w * MAX / h; h = MAX; }
-    canvas.width = w; canvas.height = h;
-    canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-    const compressed = canvas.toDataURL('image/jpeg', 0.7);
-    fotoData.push({ base64: compressed.split(',')[1], mediaType: 'image/jpeg', preview: compressed });
-    renderPreviews();
-    URL.revokeObjectURL(url);
+
+  // Show immediate preview while compressing
+  const reader = new FileReader();
+  reader.onload = e => {
+    const originalData = e.target.result;
+    const img = new Image();
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      const MAX = 800;
+      let w = img.width, h = img.height;
+      if (w > h && w > MAX) { h = Math.round(h * MAX / w); w = MAX; }
+      else if (h > MAX) { w = Math.round(w * MAX / h); h = MAX; }
+      canvas.width = w; canvas.height = h;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, w, h);
+      const compressed = canvas.toDataURL('image/jpeg', 0.75);
+      const base64 = compressed.split(',')[1];
+      if (base64 && base64.length > 100) {
+        fotoData.push({ base64, mediaType: 'image/jpeg', preview: compressed });
+      } else {
+        // fallback: use original
+        const b64 = originalData.split(',')[1];
+        fotoData.push({ base64: b64, mediaType: file.type || 'image/jpeg', preview: originalData });
+      }
+      renderPreviews();
+    };
+    img.onerror = () => {
+      // fallback se canvas fallisce
+      const b64 = originalData.split(',')[1];
+      fotoData.push({ base64: b64, mediaType: file.type || 'image/jpeg', preview: originalData });
+      renderPreviews();
+    };
+    img.src = originalData;
   };
-  img.src = url;
+  reader.readAsDataURL(file);
   input.value = '';
 }
 
@@ -267,12 +286,19 @@ function removeFoto(idx) {
 }
 
 function renderPreviews() {
-  document.getElementById('fotoPreviews').innerHTML = fotoData.map((f,i) => `
+  const area = document.getElementById('fotoArea');
+  const previews = document.getElementById('fotoPreviews');
+  previews.innerHTML = fotoData.map((f,i) => `
     <div class="foto-preview">
       <img src="${f.preview}" />
       <button class="foto-remove" onclick="removeFoto(${i})">×</button>
     </div>
   `).join('');
+  if (fotoData.length >= 1) {
+    area.style.display = 'none';
+  } else {
+    area.style.display = 'block';
+  }
 }
 
 function buildPrompt(isRielabora) {
