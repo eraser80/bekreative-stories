@@ -19,6 +19,21 @@ export default async function handler(req, res) {
     });
 
     const data = await response.json();
+    
+    // Extract text and clean JSON
+    if (data.content && data.content[0] && data.content[0].text) {
+      const raw = data.content[0].text;
+      const match = raw.match(/\{[\s\S]*\}/);
+      if (match) {
+        try {
+          const parsed = JSON.parse(match[0]);
+          data.content[0].text = JSON.stringify(parsed);
+        } catch(e) {
+          // leave as is
+        }
+      }
+    }
+    
     return res.status(response.status).json(data);
   } catch (error) {
     return res.status(500).json({ error: error.message });
