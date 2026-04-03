@@ -2,14 +2,14 @@
 <html lang="it">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="BK Stories">
 <meta name="theme-color" content="#2A2420">
 <title>BeKreative Stories</title>
 <style>
-* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+* { margin:0; padding:0; box-sizing:border-box; }
 :root {
   --cream:#F5F0E8; --warm:#E8DDD0; --terra:#C4714A;
   --sage:#7A8C6E; --dark:#2A2420; --mid:#6B5E54; --gold:#C9A96E;
@@ -22,52 +22,52 @@ header { background:var(--dark); padding:16px 20px; padding-top:max(16px,env(saf
 .container { padding:14px; max-width:600px; margin:0 auto; }
 .card { background:white; border-radius:14px; padding:16px; margin-bottom:12px; box-shadow:0 2px 10px rgba(42,36,32,.07); }
 .label { font-size:10px; text-transform:uppercase; letter-spacing:2px; color:var(--mid); font-weight:600; margin-bottom:7px; display:block; }
-select, input[type=text] { width:100%; background:var(--cream); border:1.5px solid var(--warm); border-radius:10px; padding:11px 13px; font-size:15px; color:var(--dark); outline:none; appearance:none; -webkit-appearance:none; font-family:inherit; }
+select { width:100%; background:var(--cream); border:1.5px solid var(--warm); border-radius:10px; padding:11px 13px; font-size:15px; color:var(--dark); outline:none; -webkit-appearance:none; font-family:inherit; }
+input[type=text] { width:100%; background:var(--cream); border:1.5px solid var(--warm); border-radius:10px; padding:11px 13px; font-size:15px; color:var(--dark); outline:none; font-family:inherit; -webkit-appearance:none; }
 .row2 { display:flex; gap:10px; margin-bottom:12px; }
 .row2 > div { flex:1; }
-.row3 { display:flex; gap:10px; margin-bottom:12px; }
-.row3 > div { flex:1; }
-
-/* Stile pills */
-.stile-section { margin-top:12px; }
-.stile-pills { display:flex; gap:7px; flex-wrap:wrap; margin-top:7px; }
+.stile-section { margin-top:14px; }
+.stile-pills { display:flex; gap:7px; flex-wrap:wrap; margin-top:8px; }
 .pill {
-  padding:7px 12px; border-radius:20px; font-size:12px; font-weight:600;
+  padding:9px 14px; border-radius:20px; font-size:13px; font-weight:600;
   border:1.5px solid var(--warm); background:var(--cream); color:var(--mid);
-  cursor:pointer; transition:all .2s; white-space:nowrap;
+  cursor:pointer; white-space:nowrap; user-select:none;
+  -webkit-user-select:none; touch-action:manipulation;
+  min-height:44px; display:flex; align-items:center;
 }
 .pill.active { background:var(--terra); color:white; border-color:var(--terra); }
-
-/* foto */
-.foto-area { border:1.5px dashed var(--terra); border-radius:10px; padding:14px; text-align:center; cursor:pointer; margin-top:12px; }
+.foto-area {
+  border:1.5px dashed var(--terra); border-radius:10px; padding:16px;
+  text-align:center; margin-top:14px; cursor:pointer;
+  min-height:60px; display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+  touch-action:manipulation; user-select:none; -webkit-user-select:none;
+}
 .foto-area-text { font-size:14px; color:var(--terra); font-weight:500; }
 .foto-area-sub { font-size:11px; color:var(--mid); margin-top:3px; }
 .foto-previews { display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
-.foto-preview { position:relative; width:75px; height:75px; }
-.foto-preview img { width:75px; height:75px; object-fit:cover; border-radius:8px; border:1.5px solid var(--warm); }
-.foto-remove { position:absolute; top:-6px; right:-6px; width:20px; height:20px; background:var(--terra); color:white; border:none; border-radius:50%; font-size:13px; cursor:pointer; display:flex; align-items:center; justify-content:center; }
-
-/* buttons */
-.btn-genera { width:100%; background:var(--terra); color:white; border:none; padding:16px; border-radius:14px; font-size:16px; font-weight:600; cursor:pointer; margin-bottom:14px; font-family:inherit; transition:background .2s,transform .1s; }
-.btn-genera:active { transform:scale(.98); }
-.btn-genera:disabled { background:var(--mid); }
-.btn-rielabora { width:100%; background:var(--sage); color:white; border:none; padding:13px; border-radius:12px; font-size:14px; font-weight:600; cursor:pointer; margin-bottom:14px; font-family:inherit; display:none; }
-.btn-rielabora.show { display:block; }
-
-/* loading */
+.foto-preview { position:relative; width:80px; height:80px; }
+.foto-preview img { width:80px; height:80px; object-fit:cover; border-radius:8px; border:1.5px solid var(--warm); }
+.foto-remove { position:absolute; top:-6px; right:-6px; width:24px; height:24px; background:var(--terra); color:white; border:none; border-radius:50%; font-size:14px; cursor:pointer; display:flex; align-items:center; justify-content:center; touch-action:manipulation; }
+.btn-genera {
+  width:100%; background:var(--terra); color:white; border:none;
+  padding:17px; border-radius:14px; font-size:17px; font-weight:600;
+  cursor:pointer; margin-bottom:14px; font-family:inherit;
+  touch-action:manipulation; user-select:none; -webkit-user-select:none;
+  min-height:54px; -webkit-appearance:none;
+}
+.btn-rielabora {
+  width:100%; background:var(--sage); color:white; border:none;
+  padding:14px; border-radius:12px; font-size:15px; font-weight:600;
+  cursor:pointer; margin-bottom:14px; font-family:inherit;
+  touch-action:manipulation; -webkit-appearance:none;
+  display:none;
+}
 .loading { text-align:center; padding:28px 0; display:none; }
-.loading.show { display:block; }
 .spinner { width:30px; height:30px; border:3px solid var(--warm); border-top-color:var(--terra); border-radius:50%; animation:spin .8s linear infinite; margin:0 auto 10px; }
 @keyframes spin { to { transform:rotate(360deg); } }
 .loading p { font-size:13px; color:var(--mid); }
-
-/* error */
 .error { background:#FFF0ED; border:1px solid #F5C6B4; border-radius:10px; padding:13px 15px; color:var(--terra); font-size:13px; margin-bottom:12px; display:none; }
-.error.show { display:block; }
-
-/* plan */
-.plan { display:none; }
-.plan.show { display:block; }
 .plan-header { background:var(--dark); border-radius:14px; padding:18px; margin-bottom:12px; }
 .plan-tema { font-family:Georgia,serif; font-size:20px; color:var(--cream); margin-bottom:10px; line-height:1.3; }
 .plan-tema em { color:var(--gold); }
@@ -76,7 +76,6 @@ select, input[type=text] { width:100%; background:var(--cream); border:1.5px sol
 .badge-schema { background:rgba(201,169,110,.2); color:var(--gold); }
 .badge-registro { background:rgba(122,140,110,.2); color:#9AB08A; }
 .badge-cta { background:rgba(76,175,80,.15); color:#81C784; }
-.badge-stile { background:rgba(196,113,74,.2); color:#E8946A; }
 .plan-filo { font-size:12px; color:var(--warm); opacity:.7; margin-top:8px; line-height:1.5; font-style:italic; }
 .fascia-header { display:flex; align-items:center; gap:8px; margin:16px 0 9px; }
 .fascia-emoji { font-size:17px; }
@@ -92,16 +91,15 @@ select, input[type=text] { width:100%; background:var(--cream); border:1.5px sol
 .story-formato { background:var(--cream); border-radius:20px; padding:2px 8px; font-size:10px; color:var(--mid); font-weight:500; }
 .story-titolo { font-family:Georgia,serif; font-size:15px; color:var(--dark); margin-bottom:6px; line-height:1.3; }
 .story-desc { font-size:12.5px; color:var(--mid); line-height:1.6; margin-bottom:8px; font-weight:300; }
-.story-caption { background:var(--cream); border-radius:8px; padding:9px 11px; font-size:12px; color:var(--dark); line-height:1.5; font-style:italic; border-left:2px solid var(--gold); }
+.story-caption-row { display:flex; align-items:flex-start; gap:8px; }
+.story-caption { flex:1; background:var(--cream); border-radius:8px; padding:9px 11px; font-size:12px; color:var(--dark); line-height:1.5; font-style:italic; border-left:2px solid var(--gold); }
 .story-card.pomeriggio .story-caption { border-left-color:var(--sage); }
 .story-card.sera .story-caption { border-left-color:var(--terra); }
-.story-caption-row { display:flex; align-items:flex-start; gap:8px; }
-.story-caption-row .story-caption { flex:1; }
-.btn-copia-caption { background:none; border:1.5px solid var(--warm); border-radius:8px; padding:6px 8px; font-size:14px; cursor:pointer; color:var(--mid); flex-shrink:0; transition:all .2s; }
+.btn-copia-caption { background:none; border:1.5px solid var(--warm); border-radius:8px; padding:8px 10px; font-size:15px; cursor:pointer; color:var(--mid); flex-shrink:0; touch-action:manipulation; min-width:40px; min-height:40px; display:flex; align-items:center; justify-content:center; -webkit-appearance:none; }
 .btn-copia-caption.copiato { background:var(--sage); border-color:var(--sage); color:white; }
 .hashtags { font-size:12px; color:var(--sage); font-weight:500; margin:12px 0; line-height:1.8; }
 .divider { height:1px; background:var(--warm); margin:14px 0; }
-.btn-copy { width:100%; background:#2AABEE; color:white; border:none; padding:15px; border-radius:14px; font-size:15px; font-weight:600; cursor:pointer; font-family:inherit; transition:background .3s; }
+.btn-copy { width:100%; background:#2AABEE; color:white; border:none; padding:15px; border-radius:14px; font-size:15px; font-weight:600; cursor:pointer; font-family:inherit; touch-action:manipulation; -webkit-appearance:none; min-height:50px; }
 .btn-copy.copied { background:#27AE60; }
 </style>
 </head>
@@ -146,28 +144,28 @@ select, input[type=text] { width:100%; background:var(--cream); border:1.5px sol
 
     <div class="stile-section">
       <span class="label">Tono / Stile</span>
-      <div class="stile-pills">
-        <div class="pill active" data-stile="auto" onclick="setStile(this)">🤖 AI sceglie</div>
-        <div class="pill" data-stile="narrativo" onclick="setStile(this)">💬 Narrativo</div>
-        <div class="pill" data-stile="emozionale" onclick="setStile(this)">❤️ Emozionale</div>
-        <div class="pill" data-stile="diretto" onclick="setStile(this)">🎯 Diretto</div>
-        <div class="pill" data-stile="tecnico" onclick="setStile(this)">💡 Tecnico</div>
-        <div class="pill" data-stile="ironico" onclick="setStile(this)">😄 Ironico</div>
-        <div class="pill" data-stile="educational" onclick="setStile(this)">📖 Educational</div>
-        <div class="pill" data-stile="socratico" onclick="setStile(this)">🔍 Domande</div>
+      <div class="stile-pills" id="stilePills">
+        <div class="pill active" data-stile="auto">🤖 AI sceglie</div>
+        <div class="pill" data-stile="narrativo">💬 Narrativo</div>
+        <div class="pill" data-stile="emozionale">❤️ Emozionale</div>
+        <div class="pill" data-stile="diretto">🎯 Diretto</div>
+        <div class="pill" data-stile="tecnico">💡 Tecnico</div>
+        <div class="pill" data-stile="ironico">😄 Ironico</div>
+        <div class="pill" data-stile="educational">📖 Educational</div>
+        <div class="pill" data-stile="socratico">🔍 Domande</div>
       </div>
     </div>
 
-    <div class="foto-area" id="fotoArea" onclick="document.getElementById('fotoInput').click()">
-      <div class="foto-area-text" id="fotoAreaText">📷 Aggiungi foto prodotto</div>
+    <div class="foto-area" id="fotoArea">
+      <div class="foto-area-text">📷 Aggiungi foto prodotto</div>
       <div class="foto-area-sub">Carica 1 foto — Claude la analizza visivamente</div>
     </div>
-    <input type="file" id="fotoInput" accept="image/jpeg,image/png,image/heic,image/heif" capture="environment" style="display:none" onchange="handleFoto(this)">
+    <input type="file" id="fotoInput" style="display:none" onchange="handleFoto(this)">
     <div class="foto-previews" id="fotoPreviews"></div>
   </div>
 
-  <button class="btn-genera" id="btnGenera" onclick="genera()">✦ Genera piano Stories</button>
-  <button class="btn-rielabora" id="btnRielabora" onclick="rielabora()">🔄 Rielabora con questo stile</button>
+  <button id="btnGenera">✦ Genera piano Stories</button>
+  <button id="btnRielabora" style="display:none">🔄 Rielabora con questo stile</button>
 
   <div class="loading" id="loading">
     <div class="spinner"></div>
@@ -175,10 +173,14 @@ select, input[type=text] { width:100%; background:var(--cream); border:1.5px sol
   </div>
 
   <div class="error" id="errorBox"></div>
-  <div class="plan" id="plan"></div>
+  <div id="plan"></div>
 </div>
 
 <script>
+// Apply button styles via JS to avoid CSS conflicts on iOS
+document.getElementById('btnGenera').className = 'btn-genera';
+document.getElementById('btnRielabora').className = 'btn-rielabora';
+
 const fotoData = [];
 let ultimoPlan = null;
 let stileSelezionato = 'auto';
@@ -186,15 +188,58 @@ let stileSelezionato = 'auto';
 const now = new Date();
 document.getElementById('dateLabel').textContent = now.toLocaleDateString('it-IT', { weekday:'short', day:'numeric', month:'long' });
 
+// Pills — use touchend for iOS
+document.getElementById('stilePills').addEventListener('touchend', function(e) {
+  e.preventDefault();
+  const pill = e.target.closest('.pill');
+  if (!pill) return;
+  document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+  pill.classList.add('active');
+  stileSelezionato = pill.dataset.stile;
+  if (ultimoPlan) document.getElementById('btnRielabora').style.display = 'block';
+}, { passive: false });
+
+document.getElementById('stilePills').addEventListener('click', function(e) {
+  const pill = e.target.closest('.pill');
+  if (!pill) return;
+  document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+  pill.classList.add('active');
+  stileSelezionato = pill.dataset.stile;
+  if (ultimoPlan) document.getElementById('btnRielabora').style.display = 'block';
+});
+
+// Foto area
+document.getElementById('fotoArea').addEventListener('click', function() {
+  document.getElementById('fotoInput').click();
+});
+document.getElementById('fotoArea').addEventListener('touchend', function(e) {
+  e.preventDefault();
+  document.getElementById('fotoInput').click();
+}, { passive: false });
+
+// Genera button
+document.getElementById('btnGenera').addEventListener('click', genera);
+document.getElementById('btnGenera').addEventListener('touchend', function(e) {
+  e.preventDefault();
+  genera();
+}, { passive: false });
+
+// Rielabora button
+document.getElementById('btnRielabora').addEventListener('click', rielabora);
+document.getElementById('btnRielabora').addEventListener('touchend', function(e) {
+  e.preventDefault();
+  rielabora();
+}, { passive: false });
+
 const STILE_DESCRIZIONI = {
-  auto: 'Scegli il registro più adatto al tema e allo schema del giorno.',
-  narrativo: 'Usa il registro NARRATIVO: racconta una micro-storia con personaggi reali. Es: "Giulia lo ha comprato per quel pranzo. Suo marito non ha detto niente. Ma lo ha notato."',
-  emozionale: 'Usa il registro EMOZIONALE: fai leva su sentimenti, nostalgia, desiderio. Le frasi devono toccare qualcosa dentro, non vendere nulla.',
-  diretto: 'Usa il registro DIRETTO: frasi corte, quasi brusco, zero fronzoli. Es: "Questo vaso costa 35 euro. Dura vent anni. Fine."',
-  tecnico: 'Usa il registro TECNICO-BARBARA: parla da interior designer professionista. Terminologia precisa, nessuna emozione forzata. Es: "Il problema è la scala. Quel vaso è troppo piccolo per quella parete, e si vede."',
-  ironico: 'Usa il registro IRONICO: leggero, autoironico, mai sarcastico o aggressivo. Es: "Sì, un altro vaso. No, non ne avevi già abbastanza."',
-  educational: 'Usa il registro EDUCATIONAL: insegna qualcosa di utile e pratico. Ogni story deve dare un consiglio concreto su arredamento, abbinamenti, uso dei prodotti.',
-  socratico: 'Usa il registro DOMANDA SOCRATICA: ogni frase è una domanda che fa riflettere, mai risposta diretta. Es: "Quante volte sei entrata in salotto e hai guardato quell angolo senza fare niente?"'
+  auto: 'Scegli il registro piu adatto al tema e allo schema del giorno.',
+  narrativo: 'Usa registro NARRATIVO: racconta una micro-storia con personaggi reali. Es: "Giulia lo ha comprato per quel pranzo. Suo marito non ha detto niente. Ma lo ha notato."',
+  emozionale: 'Usa registro EMOZIONALE: leva su sentimenti, nostalgia, desiderio. Le frasi devono toccare qualcosa dentro, non vendere nulla.',
+  diretto: 'Usa registro DIRETTO: frasi corte, quasi brusco, zero fronzoli. Es: "Questo vaso costa 35 euro. Dura ventanni. Fine."',
+  tecnico: 'Usa registro TECNICO-BARBARA: parla da interior designer professionista. Terminologia precisa, nessuna emozione forzata. Es: "Il problema e la scala. Quel vaso e troppo piccolo per quella parete, e si vede."',
+  ironico: 'Usa registro IRONICO: leggero, autoironico, mai sarcastico. Es: "Si, un altro vaso. No, non ne avevi gia abbastanza."',
+  educational: 'Usa registro EDUCATIONAL: insegna qualcosa di utile e pratico. Ogni story deve dare un consiglio concreto su arredamento, abbinamenti, uso dei prodotti.',
+  socratico: 'Usa registro DOMANDA SOCRATICA: ogni frase e una domanda che fa riflettere, mai risposta diretta.'
 };
 
 const RUOLO_LABELS = {
@@ -229,49 +274,35 @@ E-Barbara Parla: Barbara interior designer protagonista
 F-Domanda senza Risposta: domanda aperta, sondaggio, risposta sera
 G-Prima e Dopo Emotivo: da peso a respiro con cambiamento piccolo`;
 
-function setStile(el) {
-  document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
-  el.classList.add('active');
-  stileSelezionato = el.dataset.stile;
-  if (ultimoPlan) {
-    document.getElementById('btnRielabora').className = 'btn-rielabora show';
-  }
-}
-
 function handleFoto(input) {
   if (fotoData.length >= 1) return;
   const file = input.files[0];
   if (!file) return;
-
-  // Show immediate preview while compressing
   const reader = new FileReader();
-  reader.onload = e => {
+  reader.onload = function(e) {
     const originalData = e.target.result;
     const img = new Image();
-    img.onload = () => {
-      const canvas = document.createElement('canvas');
-      const MAX = 800;
-      let w = img.width, h = img.height;
-      if (w > h && w > MAX) { h = Math.round(h * MAX / w); w = MAX; }
-      else if (h > MAX) { w = Math.round(w * MAX / h); h = MAX; }
-      canvas.width = w; canvas.height = h;
-      const ctx = canvas.getContext('2d');
-      ctx.drawImage(img, 0, 0, w, h);
-      const compressed = canvas.toDataURL('image/jpeg', 0.75);
-      const base64 = compressed.split(',')[1];
-      if (base64 && base64.length > 100) {
-        fotoData.push({ base64, mediaType: 'image/jpeg', preview: compressed });
-      } else {
-        // fallback: use original
-        const b64 = originalData.split(',')[1];
-        fotoData.push({ base64: b64, mediaType: file.type || 'image/jpeg', preview: originalData });
+    img.onload = function() {
+      try {
+        const canvas = document.createElement('canvas');
+        const MAX = 800;
+        let w = img.width, h = img.height;
+        if (w > h && w > MAX) { h = Math.round(h * MAX / w); w = MAX; }
+        else if (h > MAX) { w = Math.round(w * MAX / h); h = MAX; }
+        canvas.width = w; canvas.height = h;
+        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+        const compressed = canvas.toDataURL('image/jpeg', 0.75);
+        const base64 = compressed.split(',')[1];
+        fotoData.push({ base64: base64, mediaType: 'image/jpeg', preview: compressed });
+      } catch(err) {
+        const base64 = originalData.split(',')[1];
+        fotoData.push({ base64: base64, mediaType: file.type || 'image/jpeg', preview: originalData });
       }
       renderPreviews();
     };
-    img.onerror = () => {
-      // fallback se canvas fallisce
-      const b64 = originalData.split(',')[1];
-      fotoData.push({ base64: b64, mediaType: file.type || 'image/jpeg', preview: originalData });
+    img.onerror = function() {
+      const base64 = originalData.split(',')[1];
+      fotoData.push({ base64: base64, mediaType: file.type || 'image/jpeg', preview: originalData });
       renderPreviews();
     };
     img.src = originalData;
@@ -286,19 +317,10 @@ function removeFoto(idx) {
 }
 
 function renderPreviews() {
-  const area = document.getElementById('fotoArea');
-  const previews = document.getElementById('fotoPreviews');
-  previews.innerHTML = fotoData.map((f,i) => `
-    <div class="foto-preview">
-      <img src="${f.preview}" />
-      <button class="foto-remove" onclick="removeFoto(${i})">×</button>
-    </div>
-  `).join('');
-  if (fotoData.length >= 1) {
-    area.style.display = 'none';
-  } else {
-    area.style.display = 'block';
-  }
+  document.getElementById('fotoPreviews').innerHTML = fotoData.map(function(f, i) {
+    return '<div class="foto-preview"><img src="' + f.preview + '" /><button class="foto-remove" onclick="removeFoto(' + i + ')">×</button></div>';
+  }).join('');
+  document.getElementById('fotoArea').style.display = fotoData.length >= 1 ? 'none' : 'flex';
 }
 
 function buildPrompt(isRielabora) {
@@ -306,51 +328,28 @@ function buildPrompt(isRielabora) {
   const stagione = document.getElementById('stagione').value;
   const focus = document.getElementById('focus').value;
   const dateStr = now.toLocaleDateString('it-IT', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
-  const fotoNote = fotoData.length > 0 ? ` Hai allegato una foto del prodotto da analizzare visivamente.` : '';
+  const fotoNote = fotoData.length > 0 ? ' Hai allegato una foto del prodotto da analizzare visivamente.' : '';
   const stileDesc = STILE_DESCRIZIONI[stileSelezionato] || '';
-
   let rielaboraNote = '';
   if (isRielabora && ultimoPlan) {
-    rielaboraNote = `\n\nSTAI RIELABORANDO UN PIANO ESISTENTE. Mantieni lo stesso tema ("${ultimoPlan.tema_del_giorno}"), lo stesso schema (${ultimoPlan.schema_scelto} - ${ultimoPlan.nome_schema}) e gli stessi prodotti. Cambia SOLO il registro/tono delle frasi secondo le istruzioni di stile qui sotto. Non cambiare i prodotti, i formati o la struttura.`;
+    rielaboraNote = '\n\nSTAI RIELABORANDO UN PIANO ESISTENTE. Mantieni tema, schema e prodotti. Cambia SOLO il tono delle frasi secondo le istruzioni stile.';
   }
-
-  return `Sei il social media strategist di BeKreative, negozio home decor a Bari (bekreative.it). Gestito da Matteo e Barbara interior designer. Oggi: ${dateStr}. Stagione: ${stagione}. Focus: ${focus}.${nota ? ' Nota: ' + nota + '.' : ''}${fotoNote}${rielaboraNote}
-
-${fotoData.length > 0 ? 'ANALISI FOTO: Osserva la foto allegata. Analizza colore, forma, texture, materiale, stile. Usa questa analisi per creare idee di shooting specifiche e reali.' : ''}
-
-CATALOGO PRODOTTI (usa SOLO questi):
-${CATALOGO}
-
-${SCHEMI}
-
-ISTRUZIONI STILE: ${stileDesc}
-
-PAROLE VIETATE: elegante, accogliente, autentico, minimal, raffinato, unico, esclusivo, trasforma, valorizza, scopri, acquista, offerta, trend, perfetto per.
-
-FORMATI disponibili in 2 minuti col telefono: foto, video 15sec a mano libera, boomerang, sondaggio sticker Instagram, testo su sfondo colorato, quiz sticker. MAI video parlati o montaggio.
-
-CTA ultima story: DM "scrivimi ti rispondo oggi", VISITA "siamo qui fino alle 19", SALVATAGGIO "salvala per quando ristrutturi".
-
-7 Stories con filo narrativo coerente. Prodotto e il mezzo non il fine. Stories indipendenti da post e Reel.
-
-Rispondi SOLO con JSON valido senza backtick. Max 18 parole per descrizione e caption:
-{"schema_scelto":"","nome_schema":"","registro":"","tema_del_giorno":"","filo_narrativo":"","cta_tipo":"","hashtags_suggeriti":["","","","",""],"fasce":[{"fascia":"mattina","orario":"9:00-11:00","stories":[{"numero":1,"ruolo":"","formato":"","titolo":"","descrizione":"","caption_didascalia":""},{"numero":2,"ruolo":"","formato":"","titolo":"","descrizione":"","caption_didascalia":""},{"numero":3,"ruolo":"","formato":"","titolo":"","descrizione":"","caption_didascalia":""}]},{"fascia":"pomeriggio","orario":"14:00-16:00","stories":[{"numero":4,"ruolo":"","formato":"","titolo":"","descrizione":"","caption_didascalia":""},{"numero":5,"ruolo":"","formato":"","titolo":"","descrizione":"","caption_didascalia":""}]},{"fascia":"sera","orario":"19:00-21:00","stories":[{"numero":6,"ruolo":"","formato":"","titolo":"","descrizione":"","caption_didascalia":""},{"numero":7,"ruolo":"cta","formato":"","titolo":"","descrizione":"","caption_didascalia":""}]}]}`;
+  return 'Sei il social media strategist di BeKreative, negozio home decor a Bari (bekreative.it). Gestito da Matteo e Barbara interior designer. Oggi: ' + dateStr + '. Stagione: ' + stagione + '. Focus: ' + focus + '.' + (nota ? ' Nota: ' + nota + '.' : '') + fotoNote + rielaboraNote + '\n\n' + (fotoData.length > 0 ? 'ANALISI FOTO: Osserva la foto allegata. Analizza colore, forma, texture, materiale, stile. Usa questa analisi per creare idee di shooting specifiche e reali.\n\n' : '') + 'CATALOGO PRODOTTI (usa SOLO questi):\n' + CATALOGO + '\n\n' + SCHEMI + '\n\nISTRUZIONI STILE: ' + stileDesc + '\n\nPAROLE VIETATE: elegante, accogliente, autentico, minimal, raffinato, unico, esclusivo, trasforma, valorizza, scopri, acquista, offerta, trend, perfetto per.\n\nFORMATI disponibili in 2 minuti col telefono: foto, video 15sec a mano libera, boomerang, sondaggio sticker Instagram, testo su sfondo colorato, quiz sticker. MAI video parlati o montaggio.\n\nCTA ultima story: DM scrivimi ti rispondo oggi, VISITA siamo qui fino alle 19, SALVATAGGIO salvala per quando ristrutturi.\n\n7 Stories con filo narrativo coerente. Prodotto e il mezzo non il fine.\n\nRispondi SOLO con JSON valido senza backtick. Max 18 parole per descrizione e caption:\n{"schema_scelto":"","nome_schema":"","registro":"","tema_del_giorno":"","filo_narrativo":"","cta_tipo":"","hashtags_suggeriti":["","","","",""],"fasce":[{"fascia":"mattina","orario":"9:00-11:00","stories":[{"numero":1,"ruolo":"","formato":"","titolo":"","descrizione":"","caption_didascalia":""},{"numero":2,"ruolo":"","formato":"","titolo":"","descrizione":"","caption_didascalia":""},{"numero":3,"ruolo":"","formato":"","titolo":"","descrizione":"","caption_didascalia":""}]},{"fascia":"pomeriggio","orario":"14:00-16:00","stories":[{"numero":4,"ruolo":"","formato":"","titolo":"","descrizione":"","caption_didascalia":""},{"numero":5,"ruolo":"","formato":"","titolo":"","descrizione":"","caption_didascalia":""}]},{"fascia":"sera","orario":"19:00-21:00","stories":[{"numero":6,"ruolo":"","formato":"","titolo":"","descrizione":"","caption_didascalia":""},{"numero":7,"ruolo":"cta","formato":"","titolo":"","descrizione":"","caption_didascalia":""}]}]}';
 }
 
 async function callAPI(isRielabora) {
-  const btn = document.getElementById('btnGenera');
+  const btnG = document.getElementById('btnGenera');
   const btnR = document.getElementById('btnRielabora');
   const loading = document.getElementById('loading');
   const errorBox = document.getElementById('errorBox');
   const planDiv = document.getElementById('plan');
-  const loadingText = document.getElementById('loadingText');
 
-  btn.disabled = true;
+  btnG.disabled = true;
   btnR.style.display = 'none';
-  loading.className = 'loading show';
-  loadingText.textContent = isRielabora ? 'Rielaborazione in corso...' : 'Claude sta generando il piano...';
-  errorBox.className = 'error';
-  if (!isRielabora) planDiv.className = 'plan';
+  loading.style.display = 'block';
+  document.getElementById('loadingText').textContent = isRielabora ? 'Rielaborazione in corso...' : 'Claude sta generando il piano...';
+  errorBox.style.display = 'none';
+  if (!isRielabora) planDiv.innerHTML = '';
 
   const userContent = [];
   if (fotoData.length > 0) {
@@ -365,8 +364,8 @@ async function callAPI(isRielabora) {
       body: JSON.stringify({ model:'claude-sonnet-4-20250514', max_tokens:2000, messages:[{ role:'user', content:userContent }] })
     });
     const data = await res.json();
-    if (!res.ok) throw new Error(data.error?.message || 'Errore API');
-    const raw = (data.content||[]).filter(b=>b.type==='text').map(b=>b.text).join('');
+    if (!res.ok) throw new Error(data.error ? data.error.message : 'Errore API');
+    const raw = (data.content || []).filter(function(b){ return b.type==='text'; }).map(function(b){ return b.text; }).join('');
     const match = raw.match(/\{[\s\S]*\}/);
     if (!match) throw new Error('Risposta non valida');
     const plan = JSON.parse(match[0]);
@@ -374,11 +373,11 @@ async function callAPI(isRielabora) {
     renderPlan(plan);
   } catch(e) {
     errorBox.textContent = '⚠️ ' + e.message;
-    errorBox.className = 'error show';
+    errorBox.style.display = 'block';
   } finally {
-    btn.disabled = false;
-    loading.className = 'loading';
-    if (ultimoPlan) btnR.className = 'btn-rielabora show';
+    btnG.disabled = false;
+    loading.style.display = 'none';
+    if (ultimoPlan) btnR.style.display = 'block';
   }
 }
 
@@ -388,56 +387,68 @@ function rielabora() { callAPI(true); }
 function renderPlan(plan) {
   const planDiv = document.getElementById('plan');
   const ctaLabel = plan.cta_tipo === 'dm' ? 'Scrivi in DM' : plan.cta_tipo === 'visita' ? 'Vieni in negozio' : 'Salva il post';
-  const stileAttivo = stileSelezionato !== 'auto' ? `<span class="badge badge-stile">✨ ${stileSelezionato}</span>` : '';
+  let html = '<div class="plan-header">';
+  html += '<div class="plan-tema"><em>' + plan.tema_del_giorno + '</em></div>';
+  html += '<div class="badges">';
+  html += '<span class="badge badge-schema">📐 ' + plan.schema_scelto + ' — ' + plan.nome_schema + '</span>';
+  html += '<span class="badge badge-registro">🎭 ' + plan.registro + '</span>';
+  html += '<span class="badge badge-cta">🎯 ' + ctaLabel + '</span>';
+  html += '</div>';
+  html += '<div class="plan-filo">🧵 ' + plan.filo_narrativo + '</div>';
+  html += '</div>';
 
-  let html = `
-    <div class="plan-header">
-      <div class="plan-tema"><em>${plan.tema_del_giorno}</em></div>
-      <div class="badges">
-        <span class="badge badge-schema">📐 ${plan.schema_scelto} — ${plan.nome_schema}</span>
-        <span class="badge badge-registro">🎭 ${plan.registro}</span>
-        <span class="badge badge-cta">🎯 ${ctaLabel}</span>
-        ${stileAttivo}
-      </div>
-      <div class="plan-filo">🧵 ${plan.filo_narrativo}</div>
-    </div>
-  `;
-
-  (plan.fasce||[]).forEach(fascia => {
-    html += `
-      <div class="fascia-header">
-        <span class="fascia-emoji">${FASCIA_EMOJI[fascia.fascia]||'⏰'}</span>
-        <span class="fascia-label">${fascia.fascia}</span>
-        <span class="fascia-orario">${fascia.orario}</span>
-      </div>
-    `;
-    (fascia.stories||[]).forEach(story => {
-      html += `
-        <div class="story-card ${fascia.fascia}">
-          <div class="story-meta">
-            <span class="story-num">Story ${story.numero}</span>
-            <div class="story-badges">
-              ${story.ruolo ? `<span class="story-ruolo">${RUOLO_LABELS[story.ruolo]||story.ruolo}</span>` : ''}
-              <span class="story-formato">${FORMAT_ICONS[story.formato]||'📱'} ${story.formato}</span>
-            </div>
-          </div>
-          <div class="story-titolo">${story.titolo}</div>
-          <div class="story-desc">${story.descrizione}</div>
-          <div class="story-caption-row"><div class="story-caption">"${story.caption_didascalia}"</div><button class="btn-copia-caption" onclick="copiaCaption(this, `${story.caption_didascalia}`)">📋</button></div>
-        </div>
-      `;
+  (plan.fasce || []).forEach(function(fascia) {
+    html += '<div class="fascia-header">';
+    html += '<span class="fascia-emoji">' + (FASCIA_EMOJI[fascia.fascia] || '⏰') + '</span>';
+    html += '<span class="fascia-label">' + fascia.fascia + '</span>';
+    html += '<span class="fascia-orario">' + fascia.orario + '</span>';
+    html += '</div>';
+    (fascia.stories || []).forEach(function(story) {
+      var captionEscaped = story.caption_didascalia.replace(/'/g, "\\'");
+      html += '<div class="story-card ' + fascia.fascia + '">';
+      html += '<div class="story-meta">';
+      html += '<span class="story-num">Story ' + story.numero + '</span>';
+      html += '<div class="story-badges">';
+      if (story.ruolo) html += '<span class="story-ruolo">' + (RUOLO_LABELS[story.ruolo] || story.ruolo) + '</span>';
+      html += '<span class="story-formato">' + (FORMAT_ICONS[story.formato] || '📱') + ' ' + story.formato + '</span>';
+      html += '</div></div>';
+      html += '<div class="story-titolo">' + story.titolo + '</div>';
+      html += '<div class="story-desc">' + story.descrizione + '</div>';
+      html += '<div class="story-caption-row">';
+      html += '<div class="story-caption">"' + story.caption_didascalia + '"</div>';
+      html += '<button class="btn-copia-caption" onclick="copiaCaption(this, \'' + captionEscaped + '\')">📋</button>';
+      html += '</div></div>';
     });
     if (fascia.fascia !== 'sera') html += '<div class="divider"></div>';
   });
 
-  html += `
-    <div class="hashtags">📌 ${(plan.hashtags_suggeriti||[]).join('  ')}</div>
-    <button class="btn-copy" id="btnCopy" onclick="copia()">✈️ Copia per Telegram</button>
-  `;
+  html += '<div class="hashtags">📌 ' + (plan.hashtags_suggeriti || []).join('  ') + '</div>';
+  html += '<button class="btn-copy" id="btnCopy" onclick="copia()">✈️ Copia per Telegram</button>';
 
   planDiv.innerHTML = html;
-  planDiv.className = 'plan show';
   planDiv.scrollIntoView({ behavior:'smooth', block:'start' });
+}
+
+function copiaCaption(btn, testo) {
+  navigator.clipboard.writeText(testo).then(function() {
+    btn.textContent = '✅';
+    btn.classList.add('copiato');
+    setTimeout(function() { btn.textContent = '📋'; btn.classList.remove('copiato'); }, 2000);
+  }).catch(function() {
+    // fallback per iOS
+    const ta = document.createElement('textarea');
+    ta.value = testo;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.focus();
+    ta.select();
+    try { document.execCommand('copy'); } catch(e) {}
+    document.body.removeChild(ta);
+    btn.textContent = '✅';
+    btn.classList.add('copiato');
+    setTimeout(function() { btn.textContent = '📋'; btn.classList.remove('copiato'); }, 2000);
+  });
 }
 
 function copia() {
@@ -445,27 +456,34 @@ function copia() {
   const plan = ultimoPlan;
   const ctaLabel = plan.cta_tipo === 'dm' ? 'Scrivi in DM' : plan.cta_tipo === 'visita' ? 'Vieni in negozio' : 'Salva il post';
   const dateStr = now.toLocaleDateString('it-IT', { weekday:'long', day:'numeric', month:'long' });
-  let msg = `📱 BeKreative Stories — ${dateStr}\n✦ ${plan.tema_del_giorno}\n📐 Schema ${plan.schema_scelto} — ${plan.nome_schema}\n🎭 ${plan.registro}\n🧵 ${plan.filo_narrativo}\n🎯 CTA: ${ctaLabel}\n\n`;
-  (plan.fasce||[]).forEach(f => {
-    const emoji = { mattina:'🌅', pomeriggio:'☀️', sera:'🌙' };
-    msg += `${emoji[f.fascia]} ${f.fascia.toUpperCase()} — ${f.orario}\n`;
-    (f.stories||[]).forEach(s => {
-      msg += `${s.numero}. ${FORMAT_ICONS[s.formato]||'📱'} ${RUOLO_LABELS[s.ruolo]||s.ruolo} — ${s.titolo}\n   ${s.descrizione}\n   💬 "${s.caption_didascalia}"\n\n`;
+  let msg = '📱 BeKreative Stories — ' + dateStr + '\n✦ ' + plan.tema_del_giorno + '\n📐 Schema ' + plan.schema_scelto + ' — ' + plan.nome_schema + '\n🎭 ' + plan.registro + '\n🧵 ' + plan.filo_narrativo + '\n🎯 CTA: ' + ctaLabel + '\n\n';
+  (plan.fasce || []).forEach(function(f) {
+    var emoji = { mattina:'🌅', pomeriggio:'☀️', sera:'🌙' };
+    msg += (emoji[f.fascia] || '⏰') + ' ' + f.fascia.toUpperCase() + ' — ' + f.orario + '\n';
+    (f.stories || []).forEach(function(s) {
+      msg += s.numero + '. ' + (FORMAT_ICONS[s.formato] || '📱') + ' ' + (RUOLO_LABELS[s.ruolo] || s.ruolo) + ' — ' + s.titolo + '\n   ' + s.descrizione + '\n   💬 "' + s.caption_didascalia + '"\n\n';
     });
   });
-  msg += `📌 ${(plan.hashtags_suggeriti||[]).join(' ')}`;
-  navigator.clipboard.writeText(msg).then(() => {
-    const btn = document.getElementById('btnCopy');
+  msg += '📌 ' + (plan.hashtags_suggeriti || []).join(' ');
+  navigator.clipboard.writeText(msg).then(function() {
+    var btn = document.getElementById('btnCopy');
     btn.textContent = '✅ Copiato!';
-    btn.className = 'btn-copy copied';
-    setTimeout(() => { btn.textContent = '✈️ Copia per Telegram'; btn.className = 'btn-copy'; }, 2500);
-  });
-}
-function copiaCaption(btn, testo) {
-  navigator.clipboard.writeText(testo).then(() => {
-    btn.textContent = '✅';
-    btn.classList.add('copiato');
-    setTimeout(() => { btn.textContent = '📋'; btn.classList.remove('copiato'); }, 2000);
+    btn.classList.add('copied');
+    setTimeout(function() { btn.textContent = '✈️ Copia per Telegram'; btn.classList.remove('copied'); }, 2500);
+  }).catch(function() {
+    const ta = document.createElement('textarea');
+    ta.value = msg;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.focus();
+    ta.select();
+    try { document.execCommand('copy'); } catch(e) {}
+    document.body.removeChild(ta);
+    var btn = document.getElementById('btnCopy');
+    btn.textContent = '✅ Copiato!';
+    btn.classList.add('copied');
+    setTimeout(function() { btn.textContent = '✈️ Copia per Telegram'; btn.classList.remove('copied'); }, 2500);
   });
 }
 </script>
