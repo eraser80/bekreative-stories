@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="BK Stories">
+<meta name="theme-color" content="#2A2420">
+<title>BeKreative Stories</title>
+<link rel="apple-touch-icon" href="icon.png">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  
+  :root {
+    --cream: #F5F0E8;
+    --warm: #E8DDD0;
+    --terra: #C4714A;
+    --sage: #7A8C6E;
+    --dark: #2A2420;
+    --mid: #6B5E54;
+    --gold: #C9A96E;
+    --light: #F0EDE8;
+  }
+
+  body {
+    background: var(--cream);
+    font-family: -apple-system, 'Helvetica Neue', Arial, sans-serif;
+    color: var(--dark);
+    min-height: 100vh;
+    padding-bottom: 40px;
+  }
+
+  header {
+    background: var(--dark);
+    padding: 16px 20px;
+    padding-top: max(16px, env(safe-area-inset-top));
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .logo {
+    font-family: Georgia, serif;
+    font-size: 18px;
+    color: var(--cream);
+    letter-spacing: 0.5px;
+  }
+  .logo span { color: var(--gold); }
+
+  .date {
+    font-size: 11px;
+    color: var(--gold);
+    opacity: 0.8;
+  }
+
+  .container { padding: 16px; max-width: 600px; margin: 0 auto; }
+
+  .card {
+    background: white;
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 14px;
+    box-shadow: 0 2px 12px rgba(42,36,32,0.07);
+  }
+
+  .label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--mid);
+    font-weight: 600;
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  select, input {
+    width: 100%;
+    background: var(--cream);
+    border: 1.5px solid var(--warm);
+    border-radius: 10px;
+    padding: 11px 13px;
+    font-size: 15px;
+    color: var(--dark);
+    outline: none;
+    appearance: none;
+    -webkit-appearance: none;
+    font-family: inherit;
+  }
+
+  .selects-row { display: flex; gap: 10px; margin-bottom: 12px; }
+  .selects-row > div { flex: 1; }
+
+  /* Photo upload */
+  .foto-area {
+    border: 1.5px dashed var(--terra);
+    border-radius: 10px;
+    padding: 16px;
+    text-align: center;
+    cursor: pointer;
+    margin-top: 12px;
+    transition: background 0.2s;
+  }
+  .foto-area:active { background: #FDF0EB; }
+  .foto-area-text { font-size: 14px; color: var(--terra); font-weight: 500; }
+  .foto-area-sub { font-size: 11px; color: var(--mid); margin-top: 4px; }
+
+  .foto-previews {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+  }
+  .foto-preview {
+    position: relative;
+    width: 80px;
+    height: 80px;
+  }
+  .foto-preview img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1.5px solid var(--warm);
+  }
+  .foto-remove {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    width: 20px;
+    height: 20px;
+    background: var(--terra);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    font-size: 13px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+  }
+
+  /* Generate button */
+  .btn-generate {
+    width: 100%;
+    background: var(--terra);
+    color: white;
+    border: none;
+    padding: 16px;
+    border-radius: 14px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-bottom: 16px;
+    font-family: inherit;
+    letter-spacing: 0.3px;
+    transition: background 0.2s, transform 0.1s;
+    -webkit-appearance: none;
+  }
+  .btn-generate:active { transform: scale(0.98); background: #B5603A; }
+  .btn-generate:disabled { background: var(--mid); cursor: not-allowed; }
+
+  /* Loading */
+  .loading { text-align: center; padding: 30px 0; display: none; }
+  .loading.show { display: block; }
+  .spinner {
+    width: 32px; height: 32px;
+    border: 3px solid var(--warm);
+    border-top-color: var(--terra);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin: 0 auto 12px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .loading p { font-size: 13px; color: var(--mid); }
+
+  /* Error */
+  .error {
+    background: #FFF0ED;
+    border: 1px solid #F5C6B4;
+    border-radius: 10px;
+    padding: 13px 15px;
+    color: var(--terra);
+    font-size: 13px;
+    margin-bottom: 14px;
+    display: none;
+  }
+  .error.show { display: block; }
+
+  /* Plan output */
+  .plan { display: none; }
+  .plan.show { display: block; }
+
+  .plan-header {
+    background: var(--dark);
+    border-radius: 14px;
+    padding: 18px;
+    margin-bottom: 14px;
+  }
+  .plan-tema {
+    font-family: Georgia, serif;
+    font-size: 20px;
+    color: var(--cream);
+    margin-bottom: 10px;
+    line-height: 1.3;
+  }
+  .plan-tema em { color: var(--gold); font-style: italic; }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    border-radius: 20px;
+    padding: 4px 10px;
+    font-size: 11px;
+    font-weight: 600;
+    margin-right: 6px;
+    margin-bottom: 6px;
+  }
+  .badge-schema { background: rgba(201,169,110,0.2); color: var(--gold); }
+  .badge-registro { background: rgba(122,140,110,0.2); color: #9AB08A; }
+  .badge-cta { background: rgba(76,175,80,0.15); color: #81C784; }
+
+  .plan-filo {
+    font-size: 12px;
+    color: var(--warm);
+    opacity: 0.7;
+    margin-top: 10px;
+    line-height: 1.5;
+    font-style: italic;
+  }
+
+  .fascia-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 18px 0 10px;
+  }
+  .fascia-emoji { font-size: 18px; }
+  .fascia-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 2.5px;
+    color: var(--mid);
+    font-weight: 700;
+  }
+  .fascia-orario { font-size: 11px; color: #A89890; }
+
+  .story-card {
+    background: white;
+    border-radius: 12px;
+    padding: 14px;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 8px rgba(42,36,32,0.05);
+    border-left: 3px solid var(--gold);
+  }
+  .story-card.pomeriggio { border-left-color: var(--sage); }
+  .story-card.sera { border-left-color: var(--terra); }
+
+  .story-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+  .story-num {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #A89890;
+    font-weight: 600;
+  }
+  .story-badges { display: flex; gap: 5px; align-items: center; flex-wrap: wrap; justify-content: flex-end; }
+  .story-ruolo {
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--terra);
+  }
+  .story-formato {
+    background: var(--cream);
+    border-radius: 20px;
+    padding: 2px 8px;
+    font-size: 10px;
+    color: var(--mid);
+    font-weight: 500;
+  }
+
+  .story-titolo {
+    font-family: Georgia, serif;
+    font-size: 15px;
+    color: var(--dark);
+    margin-bottom: 6px;
+    line-height: 1.3;
+  }
+  .story-desc {
+    font-size: 12.5px;
+    color: var(--mid);
+    line-height: 1.6;
+    margin-bottom: 8px;
+    font-weight: 300;
+  }
+  .story-caption {
+    background: var(--cream);
+    border-radius: 8px;
+    padding: 9px 11px;
+    font-size: 12px;
+    color: var(--dark);
+    line-height: 1.5;
+    font-style: italic;
+    border-left: 2px solid var(--gold);
+  }
+  .story-card.pomeriggio .story-caption { border-left-color: var(--sage); }
+  .story-card.sera .story-caption { border-left-color: var(--terra); }
+
+  .hashtags {
+    font-size: 12px;
+    color: var(--sage);
+    font-weight: 500;
+    margin: 14px 0;
+    line-height: 1.8;
+  }
+
+  /* Copy button */
+  .btn-copy {
+    width: 100%;
+    background: #2AABEE;
+    color: white;
+    border: none;
+    padding: 15px;
+    border-radius: 14px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background 0.3s;
+    -webkit-appearance: none;
+  }
+  .btn-copy.copied { background: #27AE60; }
+  .btn-copy:active { transform: scale(0.98); }
+
+  .divider { height: 1px; background: var(--warm); margin: 16px 0; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">Be<span>Kreative</span></div>
+  <div class="date" id="dateLabel"></div>
+</header>
+
+<div class="container">
+
+  <div class="card">
+    <div class="selects-row">
+      <div>
+        <span class="label">Stagione</span>
+        <select id="stagione">
+          <option value="primavera">🌸 Primavera</option>
+          <option value="estate">☀️ Estate</option>
+          <option value="autunno">🍂 Autunno</option>
+          <option value="inverno">❄️ Inverno</option>
+          <option value="pasqua">🐣 Pasqua</option>
+          <option value="natale">🎄 Natale</option>
+        </select>
+      </div>
+      <div>
+        <span class="label">Focus</span>
+        <select id="focus">
+          <option value="auto">🤖 AI sceglie</option>
+          <option value="complementi">🏺 Complementi</option>
+          <option value="tessile">🛋️ Tessile</option>
+          <option value="tavola">🍽️ Tavola</option>
+          <option value="illuminazione">💡 Lampade</option>
+          <option value="profumatori">🕯️ Profumatori</option>
+          <option value="salotto">🪑 Salotto</option>
+          <option value="stagionale">🐣 Stagionale</option>
+        </select>
+      </div>
+    </div>
+
+    <span class="label">Nota del giorno</span>
+    <input type="text" id="nota" placeholder="Es: arrivati nuovi vasi, spingo i cuscini..." />
+
+    <div class="foto-area" onclick="document.getElementById('fotoInput').click()">
+      <div class="foto-area-text">📷 Aggiungi foto prodotto</div>
+      <div class="foto-area-sub">Carica fino a 3 foto — Claude le analizza</div>
+    </div>
+    <input type="file" id="fotoInput" accept="image/*" multiple style="display:none" onchange="handleFoto(this)">
+    <div class="foto-previews" id="fotoPreviews"></div>
+  </div>
+
+  <button class="btn-generate" id="btnGenera" onclick="genera()">✦ Genera piano Stories</button>
+
+  <div class="loading" id="loading">
+    <div class="spinner"></div>
+    <p>Claude sta generando il piano...</p>
+  </div>
+
+  <div class="error" id="errorBox"></div>
+
+  <div class="plan" id="plan"></div>
+
+</div>
+
+<script>
+const fotoData = []; // {base64, mediaType, preview}
+
+// Date
+const now = new Date();
+document.getElementById('dateLabel').textContent = now.toLocaleDateString('it-IT', {
+  weekday: 'short', day: 'numeric', month: 'long'
+});
+
+const RUOLO_LABELS = {
+  "gancio":"🎣 gancio","rivelazione":"✨ rivelazione","angolo creativo":"🔮 creativo",
+  "coinvolgimento":"💬 coinvolgi","approfondimento":"📖 dettaglio","chiusura emotiva":"🌙 chiusura",
+  "cta":"🎯 cta","apertura":"☀️ apertura","protagonista":"⭐ protagonista",
+  "dietro le quinte":"🎬 backstage","problema":"❓ problema","soluzione":"💡 soluzione",
+  "barbara parla":"🎙️ barbara","domanda":"💭 domanda","risposta community":"🤝 community",
+  "prima":"⏮️ prima","dopo":"⏭️ dopo","soluzione piccola":"💡 soluzione",
+  "presentazione":"⭐ protagonista","contesto":"📖 contesto","sviluppo":"🔄 sviluppo",
+  "climax":"🔥 climax","riflessione":"🌙 riflessione","risoluzione":"✅ risoluzione"
+};
+
+const FORMAT_ICONS = { foto:"📷", video:"🎥", boomerang:"🔄", sondaggio:"📊", testo:"✍️", quiz:"❓" };
+const FASCIA_EMOJI = { mattina:"🌅", pomeriggio:"☀️", sera:"🌙" };
+
+function handleFoto(input) {
+  const files = Array.from(input.files);
+  const remaining = 3 - fotoData.length;
+  files.slice(0, remaining).forEach(file => {
+    const reader = new FileReader();
+    reader.onload = e => {
+      const base64 = e.target.result.split(',')[1];
+      const preview = e.target.result;
+      fotoData.push({ base64, mediaType: file.type || 'image/jpeg', preview });
+      renderPreviews();
+    };
+    reader.readAsDataURL(file);
+  });
+  input.value = '';
+}
+
+function renderPreviews() {
+  const container = document.getElementById('fotoPreviews');
+  container.innerHTML = fotoData.map((f, i) => `
+    <div class="foto-preview">
+      <img src="${f.preview}" />
+      <button class="foto-remove" onclick="removeFoto(${i})">×</button>
+    </div>
+  `).join('');
+}
+
+function removeFoto(idx) {
+  fotoData.splice(idx, 1);
+  renderPreviews();
+}
+
+const CATALOGO = `COMPLEMENTI: Tappeti, Quadri, Specchi, Vasi, Oggetti decorativi, Porta Candele, Lanterne, Fiori e Piante Artificiali, Orologi, Cornici, Statue, Decorazioni parete, Cesti, Porta piante, Paraventi, Portafortuna, Nappine, Ventagli
+ILLUMINAZIONE: Lampadari, Lampade da tavolo, Lampade da terra, Lampade da parete
+PROFUMATORI: Diffusori Bouquet Esteban Paris, Candele, Diffusori Spray, Sacchetti Profumati, Incensi
+TESSILE: Tovaglie, Runner tavola, Cuscini arredo, Plaid, Copriletti, Tende, Asciugamani, Trapunte, Completi letto, Mezzeri
+TAVOLA E CUCINA: Posate, Bicchieri e Brocche, Sottopiatti, Centro tavola, Tovagliette, Piatti, Tazze, Coppe e Ciotole, Vassoi
+CAMERA DA LETTO: Letti, Cuscini, Comodini
+SALOTTO: Divani, Poltrone, Poufs, Tavolini, Librerie
+SALA DA PRANZO: Tavoli, Sedie, Credenze
+STAGIONALE: Pasqua 2026 - coniglietti ceramica, galline, uova decorative, runner pasquali, tovaglie gobelin`;
+
+const SCHEMI = `SCHEMI NARRATIVI - scegli il piu adatto, NON usare sempre lo stesso:
+A-Gancio e Rivelazione: curiosita mattina, rivelazione pomeriggio, CTA sera
+B-Giornata in Negozio: racconta la giornata in tempo reale, spontaneo
+C-Problema e Soluzione: problema domestico reale, poi risposta con prodotto
+D-Storia di un Oggetto: un prodotto da 7 angoli diversi
+E-Barbara Parla: Barbara interior designer protagonista
+F-Domanda senza Risposta: domanda aperta, sondaggio, risposta sera
+G-Prima e Dopo Emotivo: da peso a respiro con cambiamento piccolo`;
+
+const PAROLE_VIETATE = `PAROLE VIETATE: elegante, accogliente, autentico, minimal, raffinato, unico, esclusivo, trasforma, valorizza, scopri, acquista, offerta, trend, perfetto per, ideale per.`;
+
+const REGISTRI = `REGISTRO - varia ogni giorno: DIRETTO (frasi corte quasi brusco), POETICO (immagini evocative), IRONICO (leggero autoironico), TECNICO-BARBARA (terminologia designer precisa), NARRATIVO (micro-storia con personaggi), DOMANDA SOCRATICA (ogni frase e una domanda).`;
+
+async function genera() {
+  const btn = document.getElementById('btnGenera');
+  const loading = document.getElementById('loading');
+  const errorBox = document.getElementById('errorBox');
+  const planDiv = document.getElementById('plan');
+  const nota = document.getElementById('nota').value;
+  const stagione = document.getElementById('stagione').value;
+  const focus = document.getElementById('focus').value;
+
+  btn.disabled = true;
+  loading.className = 'loading show';
+  errorBox.className = 'error';
+  planDiv.className = 'plan';
+
+  const dateStr = now.toLocaleDateString('it-IT', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
+  const fotoNote = fotoData.length > 0 ? ` Hai allegato ${fotoData.length} foto del prodotto da analizzare.` : '';
+
+  const textPrompt = `Sei il social media strategist di BeKreative, negozio home decor a Bari (bekreative.it). Gestito da Matteo e Barbara interior designer. Oggi: ${dateStr}. Stagione: ${stagione}. Focus: ${focus}.${nota ? ' Nota: ' + nota + '.' : ''}${fotoNote}
+
+${fotoData.length > 0 ? 'ANALISI FOTO: Osserva le foto allegate. Analizza colore, forma, texture, materiale, stile. Usa questa analisi per creare idee di shooting specifiche e aderenti al prodotto reale.' : ''}
+
+CATALOGO PRODOTTI (usa SOLO questi, non inventare mai altri prodotti):
+${CATALOGO}
+
+${SCHEMI}
+
+FORMATI disponibili in 2 minuti col telefono: foto, video 15sec a mano libera, boomerang, sondaggio sticker Instagram, testo su sfondo colorato, quiz sticker. MAI video parlati o montaggio.
+
+CTA ultima story: DM "scrivimi ti rispondo oggi", VISITA "siamo qui fino alle 19", SALVATAGGIO "salvala per quando ristrutturi". MAI offerta acquista scopri clicca.
+
+${PAROLE_VIETATE}
+
+${REGISTRI}
+
+Stories INDIPENDENTI da post e Reel. Prodotto e il mezzo non il fine. Filo narrativo coerente tra tutte e 7 le stories.
+
+Rispondi SOLO con JSON valido senza backtick. Max 18 parole per descrizione e caption:
+{"schema_scelto":"","nome_schema":"","registro":"","tema_del_giorno":"","filo_narrativo":"","cta_tipo":"","hashtags_suggeriti":["","","","",""],"fasce":[{"fascia":"mattina","orario":"9:00-11:00","stories":[{"numero":1,"ruolo":"","formato":"","titolo":"","descrizione":"","caption_didascalia":""},{"numero":2,"ruolo":"","formato":"","titolo":"","descrizione":"","caption_didascalia":""},{"numero":3,"ruolo":"","formato":"","titolo":"","descrizione":"","caption_didascalia":""}]},{"fascia":"pomeriggio","orario":"14:00-16:00","stories":[{"numero":4,"ruolo":"","formato":"","titolo":"","descrizione":"","caption_didascalia":""},{"numero":5,"ruolo":"","formato":"","titolo":"","descrizione":"","caption_didascalia":""}]},{"fascia":"sera","orario":"19:00-21:00","stories":[{"numero":6,"ruolo":"","formato":"","titolo":"","descrizione":"","caption_didascalia":""},{"numero":7,"ruolo":"cta","formato":"","titolo":"","descrizione":"","caption_didascalia":""}]}]}`;
+
+  const userContent = [];
+  fotoData.forEach(f => {
+    userContent.push({ type:"image", source:{ type:"base64", media_type:f.mediaType, data:f.base64 } });
+  });
+  userContent.push({ type:"text", text:textPrompt });
+
+  try {
+    const res = await fetch('/api/generate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 2000,
+        messages: [{ role:'user', content:userContent }]
+      })
+    });
+
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error?.message || 'Errore API');
+
+    const raw = (data.content || []).filter(b => b.type === 'text').map(b => b.text).join('');
+    const match = raw.match(/\{[\s\S]*\}/);
+    if (!match) throw new Error('Risposta non valida');
+
+    const plan = JSON.parse(match[0]);
+    renderPlan(plan);
+  } catch(e) {
+    errorBox.textContent = '⚠️ ' + e.message;
+    errorBox.className = 'error show';
+  } finally {
+    btn.disabled = false;
+    loading.className = 'loading';
+  }
+}
+
+function renderPlan(plan) {
+  const planDiv = document.getElementById('plan');
+  const ctaLabel = plan.cta_tipo === 'dm' ? 'Scrivi in DM' : plan.cta_tipo === 'visita' ? 'Vieni in negozio' : 'Salva il post';
+
+  let html = `
+    <div class="plan-header">
+      <div class="plan-tema"><em>${plan.tema_del_giorno}</em></div>
+      <div>
+        <span class="badge badge-schema">📐 Schema ${plan.schema_scelto} — ${plan.nome_schema}</span>
+        <span class="badge badge-registro">🎭 ${plan.registro}</span>
+        <span class="badge badge-cta">🎯 ${ctaLabel}</span>
+      </div>
+      <div class="plan-filo">🧵 ${plan.filo_narrativo}</div>
+    </div>
+  `;
+
+  const fasciaClass = { mattina:'mattina', pomeriggio:'pomeriggio', sera:'sera' };
+
+  (plan.fasce || []).forEach(fascia => {
+    html += `
+      <div class="fascia-header">
+        <span class="fascia-emoji">${FASCIA_EMOJI[fascia.fascia] || '⏰'}</span>
+        <span class="fascia-label">${fascia.fascia}</span>
+        <span class="fascia-orario">${fascia.orario}</span>
+      </div>
+    `;
+
+    (fascia.stories || []).forEach(story => {
+      const fc = fasciaClass[fascia.fascia] || '';
+      html += `
+        <div class="story-card ${fc}">
+          <div class="story-meta">
+            <span class="story-num">Story ${story.numero}</span>
+            <div class="story-badges">
+              ${story.ruolo ? `<span class="story-ruolo">${RUOLO_LABELS[story.ruolo] || story.ruolo}</span>` : ''}
+              <span class="story-formato">${FORMAT_ICONS[story.formato] || '📱'} ${story.formato}</span>
+            </div>
+          </div>
+          <div class="story-titolo">${story.titolo}</div>
+          <div class="story-desc">${story.descrizione}</div>
+          <div class="story-caption">"${story.caption_didascalia}"</div>
+        </div>
+      `;
+    });
+
+    if (fascia.fascia !== 'sera') html += '<div class="divider"></div>';
+  });
+
+  html += `
+    <div class="hashtags">📌 ${(plan.hashtags_suggeriti || []).join('  ')}</div>
+    <button class="btn-copy" id="btnCopy" onclick="copia(${JSON.stringify(plan).replace(/'/g,"&#39;")})">
+      ✈️ Copia per Telegram
+    </button>
+  `;
+
+  planDiv.innerHTML = html;
+  planDiv.className = 'plan show';
+  planDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function copia(plan) {
+  const ctaLabel = plan.cta_tipo === 'dm' ? 'Scrivi in DM' : plan.cta_tipo === 'visita' ? 'Vieni in negozio' : 'Salva il post';
+  const dateStr = now.toLocaleDateString('it-IT', { weekday:'long', day:'numeric', month:'long' });
+  let msg = `📱 BeKreative Stories — ${dateStr}\n`;
+  msg += `✦ ${plan.tema_del_giorno}\n`;
+  msg += `📐 Schema ${plan.schema_scelto} — ${plan.nome_schema}\n`;
+  msg += `🎭 ${plan.registro}\n`;
+  msg += `🧵 ${plan.filo_narrativo}\n`;
+  msg += `🎯 CTA: ${ctaLabel}\n\n`;
+
+  (plan.fasce || []).forEach(f => {
+    const emoji = { mattina:'🌅', pomeriggio:'☀️', sera:'🌙' };
+    msg += `${emoji[f.fascia]} ${f.fascia.toUpperCase()} — ${f.orario}\n`;
+    (f.stories || []).forEach(s => {
+      const rl = RUOLO_LABELS[s.ruolo] || s.ruolo;
+      msg += `${s.numero}. ${FORMAT_ICONS[s.formato]||'📱'} ${rl} — ${s.titolo}\n`;
+      msg += `   ${s.descrizione}\n`;
+      msg += `   💬 "${s.caption_didascalia}"\n\n`;
+    });
+  });
+  msg += `📌 ${(plan.hashtags_suggeriti || []).join(' ')}`;
+
+  navigator.clipboard.writeText(msg).then(() => {
+    const btn = document.getElementById('btnCopy');
+    btn.textContent = '✅ Copiato!';
+    btn.className = 'btn-copy copied';
+    setTimeout(() => {
+      btn.textContent = '✈️ Copia per Telegram';
+      btn.className = 'btn-copy';
+    }, 2500);
+  });
+}
+</script>
+</body>
+</html>

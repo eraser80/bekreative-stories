@@ -1,0 +1,8 @@
+{
+  "name": "bekreative-stories-planner",
+  "version": "1.0.0",
+  "description": "BeKreative Instagram Stories Planner",
+  "engines": {
+    "node": ">=18"
+  }
+}
